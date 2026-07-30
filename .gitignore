@@ -1,0 +1,35 @@
+# Local environment and secrets
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+
+# Editors and operating systems
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Logs, caches, and temporary files
+*.log
+*.tmp
+.cache/
+tmp/
+
+# Android test artifacts and local emulator state
+*.apk
+*.aab
+*.apks
+.android/
+*.avd/
+screenshot*.png
+
+# Docker image exports and archives
+*.tar
+*.tar.gz
+*.tgz
+*.oci

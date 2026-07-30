@@ -30,6 +30,7 @@ Docker Engine 的完整安装步骤、KVM 模块检查和虚拟机嵌套虚拟�
 ## 文档
 
 - [完整手动操作手册](docs/MANUAL.md)
+- [贡献指南](CONTRIBUTING.md)
 - [Dockerfile](Dockerfile)
 - [容器启动入口](entrypoint.sh)
 
