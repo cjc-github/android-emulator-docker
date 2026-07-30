@@ -42,15 +42,31 @@ Docker Engine 的完整安装步骤、KVM 模块检查和虚拟机嵌套虚拟�
 docker build --network=host -t android-emulator:api31 .
 ```
 
-启动：
+启动。`docker build` 只创建镜像，不会删除以前创建的同名容器；如果要用新构建的镜像重新创建模拟器，需要先删除旧容器：
 
 ```bash
+docker rm -f android-emulator 2>/dev/null || true
+
 docker run -d \
   --name android-emulator \
   --device /dev/kvm \
   --shm-size=2g \
   android-emulator:api31
 ```
+
+也可以让构建、清理旧容器和启动按顺序执行。只有镜像构建成功后，后面的命令才会运行：
+
+```bash
+docker build --network=host -t android-emulator:api31 . && \
+  (docker rm -f android-emulator >/dev/null 2>&1 || true) && \
+  docker run -d \
+    --name android-emulator \
+    --device /dev/kvm \
+    --shm-size=2g \
+    android-emulator:api31
+```
+
+如果需要保留已有容器，不要再次执行 `docker run`，改用 `docker start android-emulator` 启动它。删除容器会清除未挂载到宿主机或 Docker volume 的容器内数据。
 
 验证：
 
@@ -59,6 +75,20 @@ docker logs -f android-emulator
 docker exec android-emulator adb devices -l
 docker exec android-emulator adb -s emulator-5554 shell getprop ro.build.version.release
 ```
+
+进入容器的 Bash 环境：
+
+```bash
+docker exec -it android-emulator bash
+```
+
+进入模拟器的 Android Shell：
+
+```bash
+docker exec -it android-emulator adb -s emulator-5554 shell
+```
+
+输入 `exit` 可以退出 Bash 或 Android Shell。本项目默认使用无界面模式运行模拟器，因此主要通过 ADB 操作 Android 系统。
 
 ## 使用脚本
 
